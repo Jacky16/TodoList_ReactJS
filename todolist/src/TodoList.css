@@ -1,0 +1,144 @@
+body{
+    background-color: cyan;
+}
+h1{
+    padding-top: 10px;
+    text-align: center;
+    text-shadow: 1px 1px 10px rgba(94, 94, 94, 0.541);
+    font-size: 45px;
+    
+    margin: 5px;
+    color: rgb(87, 80, 80);
+}
+.list{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-left: 25%;
+    margin-right: 25%;
+    
+    border-radius: 5px;
+    box-shadow: 0px 1px 50px rgba(19, 19, 19, 0.493);
+    background-color: rgb(255, 255, 255);
+}
+.listContent{
+    display: flex;
+    flex-direction: column;
+   
+}
+/*Box shadows en los inputs */
+.listContent form input,.listContent form button, .countTasks button{
+    box-shadow: 3px 1px 10px rgba(128, 128, 128, .4);
+
+}
+form{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    align-items: center;
+    text-decoration:line-through;
+    
+}
+.listContent p{
+    padding-right: 5px;
+}
+.listContent input{
+    width: 400px;
+    height: 40px;
+    text-align: center;
+    font-size: 30px;
+    color: rgb(146, 146, 146);
+    border-radius: 4px;
+    border: 2px rgb(165, 165, 165);
+    border-style: solid;
+
+}
+form button{
+    font-size: 37px;
+    text-align:justify;
+    color: white;
+    border-radius: 4px;
+    background-color: rgb(53, 181, 255);
+    border: none;
+
+}
+form button:hover{
+    background-color: rgb(33, 116, 165);
+
+}
+.listContent input:hover{
+    background-color: rgba(83, 83, 83, 0.075);
+}
+#doList{
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    
+}
+#doList li{
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+    padding: 10px;
+    margin-right: 50px;
+    box-shadow: 1px 1px 10px rgba(92, 92, 92, 0.4);
+
+    font-size: 25px;
+    margin-bottom: 10px;
+    border-top: 2px solid  rgba(128, 128, 128, 0.5);
+    border-bottom: 2px solid  rgba(128, 128, 128, 0.5);
+
+    color: rgb(155, 155, 155);
+
+    background-color: rgba(198, 255, 252, 0.075);
+    transition: 0.5s;
+    
+}
+
+.delete{
+   
+    background-color: rgba(255, 255, 255, 0);
+    font-size: 25px;
+    padding: 0px;
+    border: 0px;
+    transition: .5s;
+}
+
+.delete:hover{
+    background-color: rgba(83, 83, 83,  0.075);
+    border-radius: 4px;
+    width: 50px;
+    height: 50px;
+    
+}
+#doList li:hover{
+    background-color: rgba(255, 0, 13, 0.185);
+}
+.countTasks{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 30px;
+    padding-left: 30px;
+
+
+}
+.countTasks p{
+    padding-right: 10px;
+    font-size: 25px;
+
+}
+.countTasks button{
+    border-radius: 4px;
+    border: none;
+    font-size: 25px;
+    background-color: rgb(53, 181, 255);
+    color: white;
+
+}
+.countTasks button:hover{
+    background-color: rgb(33, 116, 165);
+}
