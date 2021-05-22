@@ -1,57 +1,85 @@
 #!/usr/bin/node
-const http = require("http");
 
+
+const http = require("http");
 const mongo = require("mongodb").MongoClient;
-let server_url = "mongodb://localhost:27017";
-let items_db;
+
+const server_url = "mongodb://localhost:27017";
+
+let todolist_db;
 console.clear();
-mongo.connect(server_url,(err,server) =>{
-    if(err){
-        console.log("Error de conexion con la base de datos");
-        throw err;
-    }
-    items_db = server.db("todolist");
+
+mongo.connect(server_url, (err, server) => {
+
+	todolist_db = server.db("todolist");
+
 });
 
-http.createServer((request,response) =>{
 
-    response.setHeader("Access-Control-Allow-Origin", "*");
-	response.setHeader("Access-Control-Request-Method", "*");
-	response.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, HEAD, PUT");
-	response.setHeader("Access-Control-Allow-Headers", 'Origin, X-Request-With, Content-Type, Accept, Authorization');
-    console.log(request.url);
-    if(request.method == "OPTIONS"){
-        response.writeHead(200);
-        response.end();
-        return;
+http.createServer( (req, res) => {
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Access-Control-Request-Method", "*");
+	res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, HEAD, PUT");
+	res.setHeader("Access-Control-Allow-Headers", 'Origin, X-Request-With, Content-Type, Accept, Authorization');
+	if (req.method === "OPTIONS"){
+		res.writeHead(200);
+		res.end();
+		return;
+	}
+
+	if (req.url == "/submit"){
+		let body = [];
+		req.on("data", chunk => {
+
+			body.push(chunk);
+
+		}).on("end", () => {
+			let data = Buffer.concat(body).toString();
+
+			//console.log(data);
+
+			let item_data = JSON.parse(data);
+
+			todolist_db.collection("items").insertOne({
+				id: item_data.id,
+				item_name: item_data.item_name
+			});
+		});
+		
+		res.end();
+	}
+	else if (req.url == "/get_items"){
+		let list = todolist_db.collection("items").find({}).toArray();
+        
+		list.then( (data) => {
+
+			res.writeHead( 200, {'Content-Type':'text/text' });
+
+			res.write(JSON.stringify(data));
+			res.end();
+		});
+	}else if(req.url == "/remove_all"){
+        todolist_db.collection("items").drop();
+        res.end();
     }
-    if(request.url == "/submit"){
-        let body = [];
+    else if(req.url == "/remove"){
+        console.log("remove a item");
+		let body = [];
+		req.on("data", chunk => {
 
-        request.on("data",chunk =>{
-            body.push(chunk);
-        })
-        .on("end",() =>{
-            let items_data = JSON.parse(Buffer.concat(body).toString());
-            //console.log(items_data);
-            items_db.collection("items").insertOne(items_data);
-        });
-       
-        response.end();
+			body.push(chunk);
 
-    }
-    else if(request.url == "/get_items"){
-        console.log("Hay un Get Items");
+		}).on("end", () => {
+			let data = Buffer.concat(body).toString();
 
-        let dataJsons = []
-        //Una Promesa
-        dataJsons = items_db.collection("items").find({}).toArray();
-        dataJsons.then((data) =>{
-            console.log(data);
-            response.writeHead(200,{"Content-type" : "text/plain"});
-            response.write(JSON.stringify(data))
-            response.end();
-        });
-       
+			let item_data = JSON.parse(data);
+
+			todolist_db.collection("items").deleteOne({
+				id: item_data.id,
+				item_name: item_data.item_name
+			});
+		});
+		
+		res.end();
     }
 }).listen(8080);

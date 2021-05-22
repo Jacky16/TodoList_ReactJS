@@ -21,25 +21,45 @@ class TodoList extends Component{
         this.clearAll = this.clearAll.bind(this);
 
         fetch("//192.168.1.42:8080/get_items").then((response)=>{
-            console.log(response.json()).then((data) =>{
+            
+            response.json().then((data) =>{
+
                data.forEach(item =>{
-                   this.state.push({
+                   console.log(item);
+                   this.state.itemsState.push({
                        id: item.id,
-                       item: item.name
+                       item_name: item.item_name
                    })
                })
-            });
+
             this.setState({
                 itemsState: this.state.itemsState
             });
-            //this.lastID = data[data.length - 1].id;
+
+            this.lastID = data[data.length - 1].id;
+        });
         })
     }
     removeItem(id_item){
-         
+        
+
         console.log("Eliminado: " + id_item);
+
          for(let i = 0; i< this.state.itemsState.length; i++){
+
              if(this.state.itemsState[i].id === id_item){
+
+                let itemToDelete = this.state.itemsState[i];
+                
+                 //FETCH
+                 fetch("//192.168.1.42:8080/remove",{
+                method: "POST",
+                headers:{
+                    'Content-type' : "text/json"
+                },
+                body: JSON.stringify(itemToDelete)
+                })
+
                  this.state.itemsState.splice(i,1);
                  break;
              }
@@ -48,7 +68,12 @@ class TodoList extends Component{
          this.setState({
              itemsState:this.state.itemsState
          });
-        
+         
+            
+            
+            //this.lastID = data[data.length - 1].id;
+    
+
     }
     clearAll(){
         if(this.state.itemsState.length > 0){
@@ -57,6 +82,10 @@ class TodoList extends Component{
         this.setState({
             itemsState:this.state.itemsState
         });
+        fetch("//192.168.1.42:8080/remove_all");
+        
+        this.lastID = 0;
+    
     }
     addItem(e){
         //Hace que no se envie el formulario
@@ -66,7 +95,7 @@ class TodoList extends Component{
         let textValue = document.getElementById("text").value;
         
         if(textValue != ""){
-            this.state.itemsState.push({id:this.lastID,item:textValue});
+            this.state.itemsState.push({id:this.lastID,item_name:textValue});
             this.setState({
                 itemsState: this.state.itemsState
             });
@@ -85,7 +114,7 @@ class TodoList extends Component{
             });
             //Borramos el contenido del texto
             document.getElementById("text").value ="";
-            document.getElementById("text").value.focus();
+            document.getElementById("text").focus();
         }
         
 
@@ -93,7 +122,7 @@ class TodoList extends Component{
     render(){
         
         let lista = this.state.itemsState.map((todoItem) => {
-            return (<ItemList item={todoItem.item} 
+            return (<ItemList item={todoItem.item_name} 
                 id_item={todoItem.id}
                 parentRemove={this.removeItem}/>)
         });
