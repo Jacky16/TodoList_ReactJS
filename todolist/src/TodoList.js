@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import ItemList from "./ItemList"
-import { Button } from '@material-ui/core';
+import { Button, Icon } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import { green, purple } from '@material-ui/core/colors';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
 import "./TodoList.css"
 
 
@@ -39,6 +48,10 @@ class TodoList extends Component{
             this.lastID = data[data.length - 1].id;
         });
         })
+    }
+    
+    handleClick(){
+
     }
     removeItem(id_item){
         
@@ -133,16 +146,20 @@ class TodoList extends Component{
                 <h1>TODO LIST</h1>
                 <div className="listContent">
                     <form onSubmit={this.addItem}>
-                        <p><input type="text" id="text" placeholder="Add your new todo"/></p>
-                        <p><Button color="primary" variant="contained" type="Submit">Add</Button></p>
+                        <p><TextField label="Add your new todo" size="medium" id="standard-full-width" autoComplete="off" margin="normal" variant="outlined" type="text" id="text"/></p>
+                        <p><IconButton variant="contained" type="Submit" aria-label="add" >  <AddBoxIcon style={{ fontSize: 65 ,color: purple[500] }}/> </IconButton></p>
                     </form>
                     <ul id="doList">
                         {lista}
                     </ul>
                     <div className="countTasks">
                         <p>You have {this.state.itemsState.length} pending tasks</p>
-                        <p><Button color ="primary"type="Button" onClick={this.clearAll}>Clear All</Button></p>
+                        <p><Button color="secondary" type="Button"  variant="contained" startIcon={<DeleteIcon />} onClick={this.clearAll}>Clear All</Button></p>
                     </div>
+                   
+                   
+                    
+
                 </div>
             </div>
         )         
