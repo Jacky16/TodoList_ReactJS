@@ -7,8 +7,6 @@ import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import { green, purple } from '@material-ui/core/colors';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
 
 import "./TodoList.css"
 
@@ -50,9 +48,6 @@ class TodoList extends Component{
         })
     }
     
-    handleClick(){
-
-    }
     removeItem(id_item){
         
 
@@ -65,7 +60,7 @@ class TodoList extends Component{
                 let itemToDelete = this.state.itemsState[i];
                 
                  //FETCH
-                 fetch("//192.168.1.42:8080/remove",{
+                fetch("//192.168.1.42:8080/remove",{
                 method: "POST",
                 headers:{
                     'Content-type' : "text/json"
@@ -139,7 +134,7 @@ class TodoList extends Component{
                 id_item={todoItem.id}
                 parentRemove={this.removeItem}/>)
         });
-        let errorMSG = "Type something";
+       
 
         return(
             <div className="list">
@@ -154,12 +149,8 @@ class TodoList extends Component{
                     </ul>
                     <div className="countTasks">
                         <p>You have {this.state.itemsState.length} pending tasks</p>
-                        <p><Button color="secondary" type="Button"  variant="contained" startIcon={<DeleteIcon />} onClick={this.clearAll}>Clear All</Button></p>
+                        <p><Button color="secondary" type="Button"  variant="contained"  startIcon={<DeleteIcon />} onClick={this.clearAll}>Clear All</Button></p>
                     </div>
-                   
-                   
-                    
-
                 </div>
             </div>
         )         
